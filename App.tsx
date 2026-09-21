@@ -1,45 +1,70 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React,{ useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { 
+  Text, 
+  View,
+  StyleSheet, 
+  Pressable,
+  Modal,
+} from 'react-native';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import Formulario from './src/components/Formulario'
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+  const App = () => {
 
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
+    const [ modalVisible, setModalVisible ] = useState(false)
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
 
   return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.titulo}>Administrador de Citas {' '}
+        <Text style={styles.tituloBold}>Veterinaria</Text>
+      </Text>
+
+      <Pressable
+        onPress={ () => setModalVisible(true) }
+        style={styles.btnNuevaCita}
+      >
+        <Text style={styles.btnTextoNuevaCita}>Nueva Cita</Text>
+      </Pressable>
+
+      <Formulario
+        modalVisible={modalVisible}
       />
-    </View>
+
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    backgroundColor: '#f3f4f6',
+    flex: 1
   },
-});
+  titulo: {
+    textAlign: 'center',
+    color: '#374151',
+    fontSize: 30,
+    fontWeight: '600',
+  },
+  tituloBold: {
+    fontWeight: '900',
+    color: '#6d28d9',
+  },
+  btnNuevaCita: {
+    backgroundColor: '#6d28d9',
+    padding: 15,
+    marginTop: 30,
+    marginHorizontal: 20,
+    borderRadius: 10
+  },
+  btnTextoNuevaCita: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '900',
+    textTransform: 'uppercase'
+  }
+})
 
 export default App;
