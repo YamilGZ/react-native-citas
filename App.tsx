@@ -22,7 +22,7 @@ import Formulario from './src/components/Formulario'
       </Text>
 
       <Pressable
-        onPress={ () => setModalVisible(true) }
+        onPress={ () => setModalVisible(!modalVisible)}
         style={styles.btnNuevaCita}
       >
         <Text style={styles.btnTextoNuevaCita}>Nueva Cita</Text>
@@ -30,6 +30,7 @@ import Formulario from './src/components/Formulario'
 
       <Formulario
         modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
       />
 
     </SafeAreaView>

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, Modal, StyleSheet, View, TextInput, ScrollView } from 'react-native';
+import { Text, Modal, StyleSheet, View, TextInput, ScrollView, Pressable } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
-const Formulario = ({modalVisible}) => {
+const Formulario = ({modalVisible, setModalVisible}) => {
 
     const [paciente, setPaciente] = useState('')
     const [propietario, setPropietario] = useState('')
@@ -23,6 +23,15 @@ const Formulario = ({modalVisible}) => {
                     <Text style={styles.titulo}>Nueva {''}
                         <Text style={styles.tituloBold}>Cita</Text>
                     </Text>
+
+                    <Pressable 
+                        style={styles.btnCancelar}
+                        onLongPress={ () => setModalVisible(!modalVisible)}
+                    >
+                        <Text style={styles.btnCancelarTexto}>
+                            X Cancelar
+                        </Text>
+                    </Pressable>
 
                     <View style={styles.campo}>
                         <Text style={styles.label}>Nombre Paciente</Text>
@@ -74,6 +83,7 @@ const Formulario = ({modalVisible}) => {
                             <DatePicker 
                                 date={fecha}
                                 locale='es'
+                                onDateChange={ (date) => setFecha(date)}
                             />
                         </View>
                     </View>
@@ -111,6 +121,20 @@ const styles = StyleSheet.create({
   tituloBold: {
     fontWeight: '900'
   },
+  btnCancelar: {
+    marginVertical: 30,
+    backgroundColor: '#5827a4',
+    marginHorizontal: 30,
+    padding: 15,
+    borderRadius: 10
+  },
+  btnCancelarTexto: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '900',
+    fontSize: 16,
+    textTransform: 'uppercase'
+  },
   input: {
     backgroundColor: '#fff',
     padding: 15,
@@ -134,7 +158,7 @@ const styles = StyleSheet.create({
   fechaContenedor: {
     backgroundColor: '#fff',
     borderRadius: 10
-  }
+  },
 })
 
 export default Formulario
