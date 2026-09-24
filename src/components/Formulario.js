@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, Modal, StyleSheet, View, TextInput, ScrollView, Pressable } from 'react-native';
+import { Text, Modal, StyleSheet, View, TextInput, ScrollView, Pressable, Alert } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
-const Formulario = ({modalVisible, setModalVisible}) => {
+const Formulario = ({modalVisible, setModalVisible, setPacientes, pacientes}) => {
 
     const [paciente, setPaciente] = useState('')
     const [propietario, setPropietario] = useState('')
@@ -11,6 +11,37 @@ const Formulario = ({modalVisible, setModalVisible}) => {
     const [telefono, setTelefono] = useState('')
     const [fecha, setFecha] = useState(new Date())
     const [sintomas, setSintomas] = useState('')
+
+    const handleCita = () => {
+        // validar
+        if ([paciente, propietario, email, fecha, sintomas].includes('')) {
+            Alert.alert(
+                'Error',
+                'Todos los saldos son Obligatorio'
+            )
+
+            return
+        }
+
+        const nuevoPaciente = {
+            paciente, 
+            propietario, 
+            email, 
+            fecha, 
+            sintomas
+        }
+
+        setPacientes(...pacientes, nuevoPaciente)
+        setModalVisible(!modalVisible)
+
+        setPaciente('')
+        setPropietario('')
+        setEmail('')
+        setTelefono('')
+        setFecha(new Date())
+        setSintomas('')
+
+    }
 
     return (
         <Modal
@@ -99,6 +130,16 @@ const Formulario = ({modalVisible, setModalVisible}) => {
                             numberOfLines={4}
                         />
                     </View>
+
+                    <Pressable 
+                        style={styles.btnNuevaCita}
+                        onPress={handleCita}
+                    >
+                        <Text style={styles.btnNuevaCitaTexto}>
+                            Agregar Paciente
+                        </Text>
+                    </Pressable>
+
                 </ScrollView>
             </SafeAreaView>
 
@@ -159,6 +200,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10
   },
+  btnNuevaCita: {
+    marginVertical: 50,
+    backgroundColor: '#f59e0b',
+    paddingVertical: 15,
+    marginHorizontal: 30,
+    borderRadius: 10
+  },
+  btnNuevaCitaTexto: {
+    color: '#5827a4',
+    textAlign: 'center',
+    fontWeight: '900',
+    fontSize: 16,
+    textTransform: 'uppercase'
+  }
 })
 
 export default Formulario
