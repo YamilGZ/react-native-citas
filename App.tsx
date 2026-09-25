@@ -6,14 +6,26 @@ import {
   StyleSheet, 
   Pressable,
   Modal,
+  FlatList,
 } from 'react-native';
 
 import Formulario from './src/components/Formulario'
+import Paciente from './src/components/Paciente'
 
   const App = () => {
 
     const [ modalVisible, setModalVisible ] = useState(false)
-    const [pacientes, setPacientes ] = useState([])
+    interface PacienteType {
+      id: string;
+      paciente: string;
+      propietario: string;
+      email: string;
+      telefono: string;
+      fecha: Date;
+      sintomas: string;
+    }
+
+    const [pacientes, setPacientes ] = useState<PacienteType[]>([])
 
 
   return (
@@ -28,6 +40,28 @@ import Formulario from './src/components/Formulario'
       >
         <Text style={styles.btnTextoNuevaCita}>Nueva Cita</Text>
       </Pressable>
+
+      {pacientes.length === 0 ? 
+        <Text style={styles.noPacientes}>No hay pacientes aún</Text> : 
+        <FlatList
+          style={styles.listado}
+          data={pacientes}
+          keyExtractor={(item) => item.id}
+          renderItem={({item}) => {
+
+            return(
+              <Paciente 
+                item={item}
+              />
+            )
+
+          }}
+
+        />
+
+
+
+      }
 
       <Formulario
         modalVisible={modalVisible}
@@ -68,6 +102,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '900',
     textTransform: 'uppercase'
+  },
+  noPacientes: {
+    textAlign: 'center',
+    marginTop: 40,
+    fontSize: 26,
+    fontWeight: '600',
+  },
+  listado: {
+    marginTop: 50,
+    marginHorizontal: 30,
   }
 })
 

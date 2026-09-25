@@ -24,14 +24,16 @@ const Formulario = ({modalVisible, setModalVisible, setPacientes, pacientes}) =>
         }
 
         const nuevoPaciente = {
-            paciente, 
-            propietario, 
-            email, 
-            fecha, 
+            id: Date.now().toString(),
+            paciente,
+            propietario,
+            email,
+            telefono,
+            fecha,
             sintomas
         }
 
-        setPacientes(...pacientes, nuevoPaciente)
+        setPacientes([...pacientes, nuevoPaciente])
         setModalVisible(!modalVisible)
 
         setPaciente('')
