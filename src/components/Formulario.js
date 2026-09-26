@@ -1,16 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Modal, StyleSheet, View, TextInput, ScrollView, Pressable, Alert } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
-const Formulario = ({modalVisible, setModalVisible, setPacientes, pacientes}) => {
+const Formulario = ({modalVisible, setModalVisible, setPacientes, pacientes, paciente: pacienteObj}) => {
 
     const [paciente, setPaciente] = useState('')
+    const [id, setId] = useState('')
     const [propietario, setPropietario] = useState('')
     const [email, setEmail] = useState('')
     const [telefono, setTelefono] = useState('')
     const [fecha, setFecha] = useState(new Date())
     const [sintomas, setSintomas] = useState('')
+
+    useEffect(() => {
+        if (pacienteObj && Object.keys(pacienteObj).length > 0) {
+            setPaciente(pacienteObj.paciente)
+            setId(pacienteObj.id)
+            setPropietario(pacienteObj.propietario)
+            setEmail(pacienteObj.email)
+            setTelefono(pacienteObj.telefono)
+            setFecha(pacienteObj.fecha)
+            setSintomas(pacienteObj.sintomas)
+        }
+    }, [pacienteObj])
 
     const handleCita = () => {
         // validar

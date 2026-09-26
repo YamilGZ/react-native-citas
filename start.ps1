@@ -1,4 +1,7 @@
 #Requires -Version 5.1
+$ErrorActionPreference = 'SilentlyContinue'
+$ConfirmPreference = 'None'
+$ProgressPreference = 'SilentlyContinue'
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "    INICIANDO APP CITAS (React Native)" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
@@ -37,7 +40,7 @@ function Wait-ForMetro {
     Write-Host "Esperando que Metro responda" -ForegroundColor Cyan -NoNewline
     while ($timer.Elapsed.TotalSeconds -lt $TimeoutSeconds) {
         try {
-            $null = Invoke-WebRequest -Uri "http://localhost:8081" -Method GET -TimeoutSec 2 -ErrorAction Stop
+            $null = Invoke-WebRequest -Uri "http://localhost:8081" -Method GET -TimeoutSec 2 -UseBasicParsing -ErrorAction Stop
             Write-Host " OK!" -ForegroundColor Green
             return $true
         } catch {
@@ -153,7 +156,7 @@ Write-Host "  Caché limpiado." -ForegroundColor Green
 
 # ---------- PASO 5: Iniciar Metro en ventana separada ----------
 Write-Host "`n[5/7] Iniciando Metro bundler..." -ForegroundColor Green
-Start-Process powershell -ArgumentList "-NoExit","-Command","Set-Location '$PWD'; npx react-native start" -WindowStyle Normal
+Start-Process powershell -ArgumentList "-NoExit","-ExecutionPolicy","Bypass","-Command","Set-Location '$PWD'; npx react-native start" -WindowStyle Normal
 
 # Esperar a que Metro realmente responda
 $metroOk = Wait-ForMetro -TimeoutSeconds 45

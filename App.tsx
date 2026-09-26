@@ -26,7 +26,13 @@ import Paciente from './src/components/Paciente'
     }
 
     const [pacientes, setPacientes ] = useState<PacienteType[]>([])
+    const [paciente, setPaciente ] = useState({})
 
+    const pacienteEditar = (id: string) => {
+      const pacienteEditar = pacientes.filter(paciente => paciente.id === id)
+
+      setPaciente(pacienteEditar[0])
+    }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -52,6 +58,8 @@ import Paciente from './src/components/Paciente'
             return(
               <Paciente 
                 item={item}
+                setModalVisible={setModalVisible}
+                pacienteEditar={pacienteEditar}
               />
             )
 
@@ -68,6 +76,7 @@ import Paciente from './src/components/Paciente'
         setModalVisible={setModalVisible}
         setPacientes={setPacientes}
         pacientes={pacientes}
+        paciente={paciente}
       />
 
     </SafeAreaView>
