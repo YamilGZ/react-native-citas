@@ -77,6 +77,7 @@ import Paciente from './src/components/Paciente'
         setPacientes={setPacientes}
         pacientes={pacientes}
         paciente={paciente}
+        setPaciente={setPaciente}
       />
 
     </SafeAreaView>

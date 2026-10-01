@@ -3,7 +3,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Modal, StyleSheet, View, TextInput, ScrollView, Pressable, Alert } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
-const Formulario = ({modalVisible, setModalVisible, setPacientes, pacientes, paciente: pacienteObj}) => {
+const Formulario = ({
+    modalVisible, 
+    setModalVisible, 
+    setPacientes, 
+    pacientes, 
+    paciente: pacienteObj, 
+    setPaciente: setPacienteApp }) => {
 
     const [paciente, setPaciente] = useState('')
     const [id, setId] = useState('')
@@ -36,8 +42,9 @@ const Formulario = ({modalVisible, setModalVisible, setPacientes, pacientes, pac
             return
         }
 
+        // Revisar si es un registro nuevo o edicion
+
         const nuevoPaciente = {
-            id: Date.now().toString(),
             paciente,
             propietario,
             email,
@@ -46,9 +53,28 @@ const Formulario = ({modalVisible, setModalVisible, setPacientes, pacientes, pac
             sintomas
         }
 
-        setPacientes([...pacientes, nuevoPaciente])
+        if (id) {
+            // editando
+
+            nuevoPaciente.id = id 
+
+            const pacientesActualizados = pacientes.map( pacienteState =>
+                pacienteState.id === nuevoPaciente.id ? nuevoPaciente :
+                pacienteState )
+
+                setPacientes(pacientesActualizados)
+                setPacienteApp({})
+
+        } else {
+            // nuevo registro
+
+            nuevoPaciente.id = Date.now()
+            setPacientes([...pacientes, nuevoPaciente])
+        }
+
         setModalVisible(!modalVisible)
 
+        setId('')
         setPaciente('')
         setPropietario('')
         setEmail('')
@@ -72,7 +98,17 @@ const Formulario = ({modalVisible, setModalVisible, setPacientes, pacientes, pac
 
                     <Pressable 
                         style={styles.btnCancelar}
-                        onLongPress={ () => setModalVisible(!modalVisible)}
+                        onLongPress={ () => {
+                            setModalVisible(!modalVisible)
+                            setPacienteApp({})
+                            setId('')
+                            setPaciente('')
+                            setPropietario('')
+                            setEmail('')
+                            setTelefono('')
+                            setFecha(new Date())
+                            setSintomas('')
+                        }}
                     >
                         <Text style={styles.btnCancelarTexto}>
                             X Cancelar
