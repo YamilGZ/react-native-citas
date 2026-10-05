@@ -2,6 +2,8 @@
 
 Aplicación móvil para administrar citas de una veterinaria. Desarrollada con **React Native 0.87** y la **New Architecture** (Bridgeless + Fabric).
 
+Permite gestionar pacientes con operaciones CRUD completas: crear, listar, ver detalles, editar y eliminar citas veterinarias.
+
 ---
 
 ## 📋 Requisitos
@@ -25,10 +27,12 @@ npm run android:full
 ```
 
 Este script:
-- Cierra Metro anterior si está corriendo
+- Cierra Metro anterior si está corriendo en el puerto 8081
 - Inicia el emulador si no está abierto
+- Cierra y limpia la caché de la app anterior
+- Inicia Metro bundler en una ventana separada
 - Compila e instala la APK
-- Abre la app conectada a Metro
+- Reinicia la app para una conexión limpia
 
 ### Opción 2: Manual por pasos
 
@@ -102,13 +106,29 @@ react-native-citas/
 ├── android/              # Proyecto Android nativo
 ├── ios/                  # Proyecto iOS nativo
 ├── src/
-│   └── components/
-│       └── Formulario.js  # Formulario de nueva cita
+│   ├── components/
+│   │   ├── Formulario.js          # Formulario crear/editar cita
+│   │   ├── Paciente.js            # Tarjeta de paciente en lista
+│   │   └── InformacionPaciente.js # Modal con detalles completos
+│   └── helpers/
+│       └── index.js               # Helpers reutilizables (formatearFecha)
 ├── App.tsx               # Punto de entrada principal
 ├── start.ps1             # Script automático de inicio
 ├── package.json
 └── README.md
 ```
+
+---
+
+## ✨ Funcionalidades
+
+- **Crear cita:** completá el formulario con nombre del paciente, propietario, email, teléfono, fecha de alta y síntomas.
+- **Listar citas:** las citas guardadas se muestran en una lista desplazable.
+- **Ver detalle:** mantené presionada una tarjeta para abrir el modal con información completa del paciente.
+- **Editar cita:** presioná el botón *Editar* dentro de una tarjeta.
+- **Eliminar cita:** presioná el botón *Eliminar* dentro de una tarjeta. Aparece una alerta de confirmación.
+
+> Los botones *Editar*, *Eliminar* y *Cerrar* usan `onLongPress` para evitar acciones accidentales.
 
 ---
 

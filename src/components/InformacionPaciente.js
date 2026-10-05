@@ -4,6 +4,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { formatearFecha } from '../helpers'
 
 const InformacionPaciente = ({paciente, setModalPaciente, setPaciente}) => {
+  if (!paciente) {
+    return null
+  }
+
   return (
     <SafeAreaView
         style={styles.contenedor}
@@ -17,7 +21,7 @@ const InformacionPaciente = ({paciente, setModalPaciente, setPaciente}) => {
                 style={styles.btnCerrar}
                 onLongPress={() => {
                     setModalPaciente(false)
-                    setPaciente({})
+                    setPaciente(null)
                 }}
             >
                 <Text style={styles.btnCerrarTexto}>X Cerrar</Text>
@@ -27,38 +31,38 @@ const InformacionPaciente = ({paciente, setModalPaciente, setPaciente}) => {
         <View
             style={styles.contenido}
         >
-            <View 
-                style={styles.campo} 
+            <View
+                style={styles.campo}
             >
                 <Text style={styles.label}>Nombre:</Text>
                 <Text style={styles.valor}>{paciente.paciente}</Text>
             </View>
-            <View 
-                style={styles.campo} 
+            <View
+                style={styles.campo}
             >
                 <Text style={styles.label}>Propietario:</Text>
                 <Text style={styles.valor}>{paciente.propietario}</Text>
             </View>
-            <View 
-                style={styles.campo} 
+            <View
+                style={styles.campo}
             >
                 <Text style={styles.label}>Email:</Text>
                 <Text style={styles.valor}>{paciente.email}</Text>
             </View>
-            <View 
-                style={styles.campo} 
+            <View
+                style={styles.campo}
                 >
                 <Text style={styles.label}>Telefono:</Text>
                 <Text style={styles.valor}>{paciente.telefono}</Text>
             </View>
-            <View 
-                style={styles.campo} 
+            <View
+                style={styles.campo}
             >
                 <Text style={styles.label}>Fecha Alta:</Text>
                 <Text style={styles.valor}>{formatearFecha(paciente.fecha)}</Text>
             </View>
-            <View 
-                style={styles.campo} 
+            <View
+                style={styles.campo}
             >
                 <Text style={styles.label}>Síntomas:</Text>
                 <Text style={styles.valor}>{paciente.sintomas}</Text>

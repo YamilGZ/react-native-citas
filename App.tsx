@@ -14,26 +14,29 @@ import Formulario from './src/components/Formulario'
 import Paciente from './src/components/Paciente'
 import InformacionPaciente from './src/components/InformacionPaciente'
 
+interface PacienteType {
+  id: string;
+  paciente: string;
+  propietario: string;
+  email: string;
+  telefono: string;
+  fecha: Date;
+  sintomas: string;
+}
+
   const App = () => {
 
     const [ modalVisible, setModalVisible ] = useState(false)
-    interface PacienteType {
-      id: string;
-      paciente: string;
-      propietario: string;
-      email: string;
-      telefono: string;
-      fecha: Date;
-      sintomas: string;
-    }
     const [ modalPaciente, setModalPaciente ] = useState(false)
     const [pacientes, setPacientes ] = useState<PacienteType[]>([])
-    const [paciente, setPaciente ] = useState({})
+    const [paciente, setPaciente ] = useState<PacienteType | null>(null)
 
     const pacienteEditar = (id: string) => {
-      const pacienteEditar = pacientes.filter(paciente => paciente.id === id)
+      const pacienteEditar = pacientes.find(paciente => paciente.id === id)
 
-      setPaciente(pacienteEditar[0])
+      if (pacienteEditar) {
+        setPaciente(pacienteEditar)
+      }
     }
 
     const pacienteEliminar = (id: string) => {
@@ -65,7 +68,10 @@ import InformacionPaciente from './src/components/InformacionPaciente'
       </Text>
 
       <Pressable
-        onPress={ () => setModalVisible(!modalVisible)}
+        onPress={() => {
+          setPaciente(null)
+          setModalVisible(true)
+        }}
         style={styles.btnNuevaCita}
       >
         <Text style={styles.btnTextoNuevaCita}>Nueva Cita</Text>

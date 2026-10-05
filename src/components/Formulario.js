@@ -34,10 +34,10 @@ const Formulario = ({
 
     const handleCita = () => {
         // validar
-        if ([paciente, propietario, email, fecha, sintomas].includes('')) {
+        if ([paciente.trim(), propietario.trim(), email.trim(), telefono.trim(), sintomas.trim()].includes('')) {
             Alert.alert(
                 'Error',
-                'Todos los saldos son Obligatorio'
+                'Todos los campos son obligatorios'
             )
 
             return
@@ -94,15 +94,15 @@ const Formulario = ({
             <SafeAreaView style={styles.contenido}>
                 <ScrollView>
                     <Text style={styles.titulo}>
-                        { pacienteObj.id ? 'Editar' : 'Nueva' } {''}
+                        { pacienteObj?.id ? 'Editar' : 'Nueva' } {''}
                         <Text style={styles.tituloBold}>Cita</Text>
                     </Text>
 
-                    <Pressable 
+                    <Pressable
                         style={styles.btnCancelar}
                         onLongPress={ () => {
                             cerrarModal()
-                            setPacienteApp({})
+                            setPacienteApp(null)
                             setId('')
                             setPaciente('')
                             setPropietario('')
@@ -184,12 +184,12 @@ const Formulario = ({
                         />
                     </View>
 
-                    <Pressable 
+                    <Pressable
                         style={styles.btnNuevaCita}
                         onPress={handleCita}
                     >
                         <Text style={styles.btnNuevaCitaTexto}>
-                            { pacienteObj.id ? 'Editar' : 'Agregar' } Paciente
+                            { pacienteObj?.id ? 'Editar' : 'Agregar' } Paciente
                         </Text>
                     </Pressable>
 
