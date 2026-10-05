@@ -1,45 +1,50 @@
 import React from 'react'
 import { Text, View, StyleSheet, Pressable } from 'react-native'
+import { formatearFecha } from '../helpers'
 
-const Paciente = ({item, setModalVisible, pacienteEditar}) => {
+const Paciente = ({
+    item, 
+    setModalVisible, 
+    pacienteEditar, 
+    pacienteEliminar,
+    setModalPaciente,
+    setPaciente
+  }) => {
 
   const { paciente, fecha, id } = item
 
-  const formatearFecha = fecha => {
-    const nuevaFecha = new Date(fecha)
-    const opciones = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }
-
-    return nuevaFecha.toLocaleDateString('es-ES', opciones)
-
-  }
-
   return (
-    <View style={styles.contenedor}>
-      <Text style={styles.label}>Paciente:</Text>
-      <Text style={styles.texto}>{paciente}</Text>
-      <Text style={styles.fecha}>{formatearFecha(fecha)}</Text>
+    <Pressable
+      onLongPress={ () => {
+          setModalPaciente(true)
+          setPaciente(item)
+      }}
+    >
+      <View style={styles.contenedor}>
+        <Text style={styles.label}>Paciente:</Text>
+        <Text style={styles.texto}>{paciente}</Text>
+        <Text style={styles.fecha}>{formatearFecha(fecha)}</Text>
 
-      <View style={styles.contenedorBotones}>
-        <Pressable 
-          style={[styles.btn, styles.btnEditar]}
-          onLongPress={ () => {
-            setModalVisible(true)
-            pacienteEditar(id)
-          }}
-        >
-          <Text style={styles.btnTexto}>Editar</Text>
-        </Pressable>
-        <Pressable style={[styles.btn, styles.btnEliminar]}>
-          <Text style={styles.btnTexto}>Eliminar</Text>
-        </Pressable>
+        <View style={styles.contenedorBotones}>
+          <Pressable 
+            style={[styles.btn, styles.btnEditar]}
+            onLongPress={ () => {
+              setModalVisible(true)
+              pacienteEditar(id)
+            }}
+          >
+            <Text style={styles.btnTexto}>Editar</Text>
+          </Pressable>
+          <Pressable 
+              style={[styles.btn, styles.btnEliminar]}
+              onLongPress={ () => pacienteEliminar(id) }
+            >
+            <Text style={styles.btnTexto}>Eliminar</Text>
+          </Pressable>
+        </View>
+
       </View>
-
-    </View>
+    </Pressable>
   )
 }
 

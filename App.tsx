@@ -7,10 +7,12 @@ import {
   Pressable,
   Modal,
   FlatList,
+  Alert
 } from 'react-native';
 
 import Formulario from './src/components/Formulario'
 import Paciente from './src/components/Paciente'
+import InformacionPaciente from './src/components/InformacionPaciente'
 
   const App = () => {
 
@@ -24,7 +26,7 @@ import Paciente from './src/components/Paciente'
       fecha: Date;
       sintomas: string;
     }
-
+    const [ modalPaciente, setModalPaciente ] = useState(false)
     const [pacientes, setPacientes ] = useState<PacienteType[]>([])
     const [paciente, setPaciente ] = useState({})
 
@@ -32,6 +34,28 @@ import Paciente from './src/components/Paciente'
       const pacienteEditar = pacientes.filter(paciente => paciente.id === id)
 
       setPaciente(pacienteEditar[0])
+    }
+
+    const pacienteEliminar = (id: string) => {
+      Alert.alert(
+        '¿Deseas eliminar este paciente?',
+        'Un paciente eliminado no se puede recuperar',
+        [
+          { text: 'Cancelar' },
+          { text: 'Si, Eliminar', onPress: () => {
+              const pacienteActualizados = pacientes.filter(
+                pacientesState => pacientesState.id !== id)
+
+                setPacientes(pacienteActualizados)
+
+          } }
+        ]
+        
+      )
+    }
+
+    const cerrarModal = () => {
+      setModalVisible(false)
     }
 
   return (
@@ -59,7 +83,10 @@ import Paciente from './src/components/Paciente'
               <Paciente 
                 item={item}
                 setModalVisible={setModalVisible}
+                setPaciente={setPaciente}
                 pacienteEditar={pacienteEditar}
+                pacienteEliminar={pacienteEliminar}
+                setModalPaciente={setModalPaciente}
               />
             )
 
@@ -73,12 +100,23 @@ import Paciente from './src/components/Paciente'
 
       <Formulario
         modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
+        cerrarModal={cerrarModal}
         setPacientes={setPacientes}
         pacientes={pacientes}
         paciente={paciente}
         setPaciente={setPaciente}
       />
+
+      <Modal
+        visible={modalPaciente}
+        animationType='slide'
+      >
+        <InformacionPaciente 
+          paciente={paciente}
+          setModalPaciente={setModalPaciente}
+          setPaciente={setPaciente}
+        />
+      </Modal>
 
     </SafeAreaView>
   );
