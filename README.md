@@ -6,6 +6,8 @@ Permite gestionar pacientes con operaciones CRUD completas: crear, listar, ver d
 
 > ⚠️ **Persistencia:** por ahora los datos se guardan **en memoria**. Al cerrar la app, las citas se pierden. En futuras versiones se puede agregar persistencia local (AsyncStorage, SQLite, etc.).
 
+> 📦 **APK de release:** en la raíz del proyecto se incluye `app-citas.apk`, una APK de release lista para instalar en Android sin depender de la PC. Para ver cómo se genera, consultá [`APK_BUILD.md`](APK_BUILD.md).
+
 ---
 
 ## 📸 Screenshots de la app
@@ -164,10 +166,13 @@ react-native-citas/
 ## ✨ Funcionalidades
 
 - **Crear cita:** completá el formulario con nombre del paciente, propietario, email, teléfono, fecha de alta y síntomas.
+- **Validación de fecha:** la fecha de alta debe ser obligatoriamente **posterior a hoy**; el picker nativo no permite seleccionar días anteriores.
 - **Listar citas:** las citas guardadas se muestran en una lista desplazable.
 - **Ver detalle:** mantené presionada una tarjeta para abrir el modal con información completa del paciente.
-- **Editar cita:** presioná el botón *Editar* dentro de una tarjeta.
+- **Editar cita:** presioná el botón *Editar* dentro de una tarjeta. Carga todos los datos del paciente.
 - **Eliminar cita:** presioná el botón *Eliminar* dentro de una tarjeta. Aparece una alerta de confirmación.
+- **Status bar visible:** los íconos del sistema (hora, batería) se muestran en oscuro sobre el fondo claro.
+- **Teclado no tapa los inputs:** el formulario se ajusta para que el campo de síntomas sea visible mientras se escribe.
 
 > Los botones *Editar*, *Eliminar* y *Cerrar* usan `onLongPress` para evitar acciones accidentales.
 
@@ -180,7 +185,9 @@ react-native-citas/
 | `react-native` | 0.87.1 | Framework principal |
 | `react` | 19.2.3 | Librería React |
 | `react-native-safe-area-context` | ^5.5.2 | SafeAreaView |
-| `react-native-date-picker` | ^5.0.13 | Selector de fecha/hora |
+| `@react-native-community/datetimepicker` | ^9.2.1 | Selector nativo de fecha/hora |
+
+> Nota: inicialmente se probó `react-native-date-picker`, pero se reemplazó por `@react-native-community/datetimepicker` para compatibilidad nativa en dispositivos Android 14.
 
 ---
 
@@ -276,15 +283,17 @@ netstat -ano | findstr 8081
 taskkill /F /PID <PID>
 ```
 
-### `react-native-date-picker` no compila
+### Selector de fecha no se muestra en Android 14
 
-Si ves error sobre `proguard-android.txt`, editá:
+El proyecto usa `@react-native-community/datetimepicker`, que abre el diálogo nativo de fecha de Android. Si experimentás problemas, verificá que la dependencia esté correctamente instalada:
 
+```bash
+npm install @react-native-community/datetimepicker
 ```
-node_modules/react-native-date-picker/android/build.gradle
-```
 
-Cambiá `proguard-android.txt` por `proguard-android-optimize.txt`.
+### Status bar no se ve sobre fondo claro
+
+La app configura `StatusBar` con `barStyle='dark-content'` y fondo `#f3f4f6` para que hora, batería e íconos del sistema sean visibles.
 
 ---
 
