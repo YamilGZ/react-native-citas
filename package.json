@@ -8,7 +8,9 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "build:apk": "cd android && ./gradlew assembleRelease && cp app/build/outputs/apk/release/app-release.apk ../app-citas.apk",
+    "clean:deps": "rm -rf android/app/build android/app/.cxx android/.gradle android/build node_modules"
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "^9.2.1",

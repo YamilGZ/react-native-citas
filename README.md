@@ -249,6 +249,14 @@ La APK resultante quedará en:
 android/app/build/outputs/apk/release/app-release.apk
 ```
 
+### Atajo con npm
+
+También podés usar el script ya configurado en `package.json` para compilar la APK de release y copiarla directamente a la raíz del proyecto como `app-citas.apk`:
+
+```bash
+npm run build:apk
+```
+
 ---
 
 ## 🛠️ Solución de problemas
@@ -294,6 +302,54 @@ npm install @react-native-community/datetimepicker
 ### Status bar no se ve sobre fondo claro
 
 La app configura `StatusBar` con `barStyle='dark-content'` y fondo `#f3f4f6` para que hora, batería e íconos del sistema sean visibles.
+
+---
+
+## 🧹 Limpieza de archivos generados
+
+Si el proyecto ocupa varios GB, es por archivos generados durante la compilación. El `.gitignore` ya evita que entren en git, pero los archivos siguen ocupando espacio en disco de forma local.
+
+Estas carpetas se pueden borrar de forma segura:
+
+```bash
+cd /c/laragon/www/react-native-citas
+
+rm -rf android/app/build
+rm -rf android/app/.cxx
+rm -rf android/.gradle
+rm -rf android/build
+rm -rf node_modules
+```
+
+O podés usar el script ya configurado en `package.json`:
+
+```bash
+npm run clean:deps
+```
+
+Esto libera aproximadamente **3.9 GB**. El código fuente, los tests y las capturas de pantalla quedan intactos.
+
+### Regenerar el proyecto después de limpiar
+
+```bash
+npm install
+npm run build:apk
+```
+
+Este comando compila la APK de release y la copia directamente a la raíz como `app-citas.apk`.
+
+Si preferís hacerlo paso a paso manual:
+
+```bash
+npm install
+cd android && ./gradlew assembleRelease
+```
+
+La APK de release se generará nuevamente en:
+
+```
+android/app/build/outputs/apk/release/app-release.apk
+```
 
 ---
 
