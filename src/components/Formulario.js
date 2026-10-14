@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, Modal, StyleSheet, View, TextInput, ScrollView, Pressable, Alert } from 'react-native';
+import { Text, Modal, StyleSheet, View, TextInput, ScrollView, Pressable, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
 const Formulario = ({
@@ -22,13 +22,21 @@ const Formulario = ({
 
     useEffect(() => {
         if (pacienteObj && Object.keys(pacienteObj).length > 0) {
-            setPaciente(pacienteObj.paciente)
-            setId(pacienteObj.id)
-            setPropietario(pacienteObj.propietario)
-            setEmail(pacienteObj.email)
-            setTelefono(pacienteObj.telefono)
-            setFecha(pacienteObj.fecha)
-            setSintomas(pacienteObj.sintomas)
+            setPaciente(pacienteObj.paciente || '')
+            setId(pacienteObj.id || '')
+            setPropietario(pacienteObj.propietario || '')
+            setEmail(pacienteObj.email || '')
+            setTelefono(pacienteObj.telefono || '')
+            setFecha(pacienteObj.fecha ? new Date(pacienteObj.fecha) : new Date())
+            setSintomas(pacienteObj.sintomas || '')
+        } else {
+            setPaciente('')
+            setId('')
+            setPropietario('')
+            setEmail('')
+            setTelefono('')
+            setFecha(new Date())
+            setSintomas('')
         }
     }, [pacienteObj])
 
@@ -64,7 +72,7 @@ const Formulario = ({
                 pacienteState )
 
                 setPacientes(pacientesActualizados)
-                setPacienteApp({})
+                setPacienteApp(null)
 
         } else {
             // nuevo registro
@@ -92,7 +100,15 @@ const Formulario = ({
         >
         
             <SafeAreaView style={styles.contenido}>
-                <ScrollView>
+                <KeyboardAvoidingView
+                    style={styles.keyboardAvoiding}
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                >
+                <ScrollView
+                    keyboardShouldPersistTaps='handled'
+                    keyboardDismissMode='on-drag'
+                    contentContainerStyle={styles.scrollContent}
+                >
                     <Text style={styles.titulo}>
                         { pacienteObj?.id ? 'Editar' : 'Nueva' } {''}
                         <Text style={styles.tituloBold}>Cita</Text>
@@ -164,16 +180,21 @@ const Formulario = ({
                         <Text style={styles.label}>Fecha Alta</Text>
 
                         <View style={styles.fechaContenedor}>
-                            <DatePicker 
+                            <DatePicker
                                 date={fecha}
                                 locale='es'
-                                onDateChange={ (date) => setFecha(date)}
+                                mode='date'
+                                androidVariant='iosClone'
+                                textColor='#000000'
+                                fadeToColor='#ffffff'
+                                onDateChange={(date) => setFecha(date)}
+                                style={styles.datePicker}
                             />
                         </View>
                     </View>
                     <View style={styles.campo}>
                         <Text style={styles.label}>Síntomas</Text>
-                        <TextInput 
+                        <TextInput
                             style={[styles.input, styles.sintomasInput]}
                             placeholder='Síntomas paciente'
                             placeholderTextColor={'#666'}
@@ -181,6 +202,7 @@ const Formulario = ({
                             onChangeText={setSintomas}
                             multiline={true}
                             numberOfLines={4}
+                            scrollEnabled={true}
                         />
                     </View>
 
@@ -194,6 +216,7 @@ const Formulario = ({
                     </Pressable>
 
                 </ScrollView>
+                </KeyboardAvoidingView>
             </SafeAreaView>
 
         </Modal>
@@ -204,6 +227,12 @@ const styles = StyleSheet.create({
   contenido: {
     backgroundColor: '#6d28d9',
     flex: 1
+  },
+  keyboardAvoiding: {
+    flex: 1
+  },
+  scrollContent: {
+    paddingBottom: 150
   },
   titulo: {
     textAlign: 'center',
@@ -251,7 +280,15 @@ const styles = StyleSheet.create({
   },
   fechaContenedor: {
     backgroundColor: '#fff',
-    borderRadius: 10
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    minHeight: 220
+  },
+  datePicker: {
+    height: 220,
+    width: '100%'
   },
   btnNuevaCita: {
     marginVertical: 50,

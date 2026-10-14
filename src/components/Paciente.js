@@ -26,11 +26,11 @@ const Paciente = ({
         <Text style={styles.fecha}>{formatearFecha(fecha)}</Text>
 
         <View style={styles.contenedorBotones}>
-          <Pressable 
+          <Pressable
             style={[styles.btn, styles.btnEditar]}
             onLongPress={ () => {
-              setModalVisible(true)
               pacienteEditar(id)
+              setModalVisible(true)
             }}
           >
             <Text style={styles.btnTexto}>Editar</Text>
