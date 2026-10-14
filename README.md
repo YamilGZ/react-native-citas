@@ -15,22 +15,22 @@ Permite gestionar pacientes con operaciones CRUD completas: crear, listar, ver d
 A continuación se muestran las principales pantallas de la aplicación:
 
 ### Pantalla de inicio
-![Pantalla de inicio](screenshop/Administrador-HomePage.png)
+![Pantalla de inicio](screenshots/Administrador-HomePage.png)
 
 ### Nueva cita
-![Nueva cita](screenshop/NuevaCitaPage.png)
+![Nueva cita](screenshots/NuevaCitaPage.png)
 
 ### Paciente creado
-![Paciente creado](screenshop/PacienteCreadoPage.png)
+![Paciente creado](screenshots/PacienteCreadoPage.png)
 
 ### Información del paciente
-![Información del paciente](screenshop/InformacionPage.png)
+![Información del paciente](screenshots/InformacionPage.png)
 
 ### Editar paciente
-![Editar paciente](screenshop/EditarPage.png)
+![Editar paciente](screenshots/EditarPage.png)
 
 ### Eliminar paciente
-![Eliminar paciente](screenshop/EliminarPage.png)
+![Eliminar paciente](screenshots/EliminarPage.png)
 
 ---
 
@@ -147,7 +147,7 @@ Una vez que Metro esté corriendo, presioná:
 react-native-citas/
 ├── android/              # Proyecto Android nativo
 ├── ios/                  # Proyecto iOS nativo (requiere macOS + Xcode)
-├── screenshop/           # Capturas de pantalla para la documentación
+├── screenshots/           # Capturas de pantalla para la documentación
 ├── src/
 │   ├── components/
 │   │   ├── Formulario.js          # Formulario crear/editar cita
