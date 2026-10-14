@@ -2,13 +2,13 @@ import React,{ useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Text,
-  View,
   StyleSheet,
   Pressable,
   Modal,
   FlatList,
   Alert,
-  StatusBar
+  StatusBar,
+  Platform
 } from 'react-native';
 
 import Formulario from './src/components/Formulario'
@@ -64,11 +64,14 @@ interface PacienteType {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar
-        barStyle='dark-content'
-        backgroundColor='#f3f4f6'
-        translucent={false}
-      />
+      {Platform.OS === 'android' && (
+        // @ts-ignore - props de Android no tipadas en RN 0.87
+        <StatusBar
+          barStyle='dark-content'
+          backgroundColor='#f3f4f6'
+          translucent={false}
+        />
+      )}
       <Text style={styles.titulo}>Administrador de Citas {' '}
         <Text style={styles.tituloBold}>Veterinaria</Text>
       </Text>
