@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Modal, StyleSheet, View, TextInput, ScrollView, Pressable, Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import DatePicker from 'react-native-date-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Formulario = ({
         modalVisible,
@@ -19,6 +19,7 @@ const Formulario = ({
     const [telefono, setTelefono] = useState('')
     const [fecha, setFecha] = useState(new Date())
     const [sintomas, setSintomas] = useState('')
+    const [mostrarDatePicker, setMostrarDatePicker] = useState(false)
 
     useEffect(() => {
         if (pacienteObj && Object.keys(pacienteObj).length > 0) {
@@ -40,12 +41,31 @@ const Formulario = ({
         }
     }, [pacienteObj])
 
+    const hoy = new Date()
+    hoy.setHours(0, 0, 0, 0)
+
+    const manana = new Date(hoy)
+    manana.setDate(hoy.getDate() + 1)
+
     const handleCita = () => {
-        // validar
+        // validar campos vacios
         if ([paciente.trim(), propietario.trim(), email.trim(), telefono.trim(), sintomas.trim()].includes('')) {
             Alert.alert(
                 'Error',
                 'Todos los campos son obligatorios'
+            )
+
+            return
+        }
+
+        // validar fecha de alta (debe ser mayor a hoy)
+        const fechaSeleccionada = new Date(fecha)
+        fechaSeleccionada.setHours(0, 0, 0, 0)
+
+        if (fechaSeleccionada <= hoy) {
+            Alert.alert(
+                'Fecha inválida',
+                'La fecha de alta debe ser posterior a hoy'
             )
 
             return
@@ -179,18 +199,35 @@ const Formulario = ({
                     <View style={styles.campo}>
                         <Text style={styles.label}>Fecha Alta</Text>
 
-                        <View style={styles.fechaContenedor}>
-                            <DatePicker
-                                date={fecha}
-                                locale='es'
+                        <Pressable
+                            style={styles.fechaContenedor}
+                            onPress={() => setMostrarDatePicker(true)}
+                        >
+                            <Text style={styles.fechaTexto}>
+                                {fecha.toLocaleDateString('es-ES', {
+                                    weekday: 'long',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                })}
+                            </Text>
+                        </Pressable>
+
+                        {mostrarDatePicker && (
+                            <DateTimePicker
+                                value={fecha}
                                 mode='date'
-                                androidVariant='iosClone'
-                                textColor='#000000'
-                                fadeToColor='#ffffff'
-                                onDateChange={(date) => setFecha(date)}
-                                style={styles.datePicker}
+                                display='default'
+                                locale='es'
+                                minimumDate={manana}
+                                onChange={(event, selectedDate) => {
+                                    setMostrarDatePicker(false)
+                                    if (selectedDate) {
+                                        setFecha(selectedDate)
+                                    }
+                                }}
                             />
-                        </View>
+                        )}
                     </View>
                     <View style={styles.campo}>
                         <Text style={styles.label}>Síntomas</Text>
@@ -281,14 +318,13 @@ const styles = StyleSheet.create({
   fechaContenedor: {
     backgroundColor: '#fff',
     borderRadius: 10,
-    alignItems: 'center',
+    padding: 15,
     justifyContent: 'center',
-    paddingVertical: 10,
-    minHeight: 220
+    minHeight: 55
   },
-  datePicker: {
-    height: 220,
-    width: '100%'
+  fechaTexto: {
+    color: '#374151',
+    fontSize: 16
   },
   btnNuevaCita: {
     marginVertical: 50,

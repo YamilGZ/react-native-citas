@@ -1,13 +1,14 @@
 import React,{ useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { 
-  Text, 
+import {
+  Text,
   View,
-  StyleSheet, 
+  StyleSheet,
   Pressable,
   Modal,
   FlatList,
-  Alert
+  Alert,
+  StatusBar
 } from 'react-native';
 
 import Formulario from './src/components/Formulario'
@@ -63,6 +64,11 @@ interface PacienteType {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        barStyle='dark-content'
+        backgroundColor='#f3f4f6'
+        translucent={false}
+      />
       <Text style={styles.titulo}>Administrador de Citas {' '}
         <Text style={styles.tituloBold}>Veterinaria</Text>
       </Text>
