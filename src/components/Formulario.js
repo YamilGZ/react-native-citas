@@ -12,12 +12,18 @@ const Formulario = ({
         setPaciente: setPacienteApp
     }) => {
 
+    const hoy = new Date()
+    hoy.setHours(0, 0, 0, 0)
+
+    const tomorrow = new Date(hoy)
+    tomorrow.setDate(hoy.getDate() + 1)
+
     const [paciente, setPaciente] = useState('')
     const [id, setId] = useState('')
     const [propietario, setPropietario] = useState('')
     const [email, setEmail] = useState('')
     const [telefono, setTelefono] = useState('')
-    const [fecha, setFecha] = useState(new Date())
+    const [fecha, setFecha] = useState(tomorrow)
     const [sintomas, setSintomas] = useState('')
     const [mostrarDatePicker, setMostrarDatePicker] = useState(false)
 
@@ -28,7 +34,7 @@ const Formulario = ({
             setPropietario(pacienteObj.propietario || '')
             setEmail(pacienteObj.email || '')
             setTelefono(pacienteObj.telefono || '')
-            setFecha(pacienteObj.fecha ? new Date(pacienteObj.fecha) : new Date())
+            setFecha(pacienteObj.fecha ? new Date(pacienteObj.fecha) : tomorrow)
             setSintomas(pacienteObj.sintomas || '')
         } else {
             setPaciente('')
@@ -36,16 +42,10 @@ const Formulario = ({
             setPropietario('')
             setEmail('')
             setTelefono('')
-            setFecha(new Date())
+            setFecha(tomorrow)
             setSintomas('')
         }
     }, [pacienteObj])
-
-    const hoy = new Date()
-    hoy.setHours(0, 0, 0, 0)
-
-    const manana = new Date(hoy)
-    manana.setDate(hoy.getDate() + 1)
 
     const handleCita = () => {
         // validar campos vacios
@@ -108,7 +108,7 @@ const Formulario = ({
         setPropietario('')
         setEmail('')
         setTelefono('')
-        setFecha(new Date())
+        setFecha(tomorrow)
         setSintomas('')
 
     }
@@ -144,7 +144,7 @@ const Formulario = ({
                             setPropietario('')
                             setEmail('')
                             setTelefono('')
-                            setFecha(new Date())
+                            setFecha(tomorrow)
                             setSintomas('')
                         }}
                     >
@@ -219,7 +219,7 @@ const Formulario = ({
                                 mode='date'
                                 display='default'
                                 locale='es'
-                                minimumDate={manana}
+                                minimumDate={tomorrow}
                                 onChange={(event, selectedDate) => {
                                     setMostrarDatePicker(false)
                                     if (selectedDate) {
