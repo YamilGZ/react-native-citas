@@ -4,6 +4,32 @@ Aplicación móvil para administrar citas de una veterinaria. Desarrollada con *
 
 Permite gestionar pacientes con operaciones CRUD completas: crear, listar, ver detalles, editar y eliminar citas veterinarias.
 
+> ⚠️ **Persistencia:** por ahora los datos se guardan **en memoria**. Al cerrar la app, las citas se pierden. En futuras versiones se puede agregar persistencia local (AsyncStorage, SQLite, etc.).
+
+---
+
+## 📸 Screenshots de la app
+
+A continuación se muestran las principales pantallas de la aplicación:
+
+### Pantalla de inicio
+![Pantalla de inicio](screenshop/Administrador-HomePage.png)
+
+### Nueva cita
+![Nueva cita](screenshop/NuevaCitaPage.png)
+
+### Paciente creado
+![Paciente creado](screenshop/PacienteCreadoPage.png)
+
+### Información del paciente
+![Información del paciente](screenshop/InformacionPage.png)
+
+### Editar paciente
+![Editar paciente](screenshop/EditarPage.png)
+
+### Eliminar paciente
+![Eliminar paciente](screenshop/EliminarPage.png)
+
 ---
 
 ## 📋 Requisitos
@@ -13,6 +39,8 @@ Permite gestionar pacientes con operaciones CRUD completas: crear, listar, ver d
 - **Android Emulator** o dispositivo físico conectado
 - **Java JDK** 17+
 - **Git Bash** o PowerShell (Windows)
+
+> **Nota sobre iOS:** el proyecto incluye la carpeta `ios/` generada por React Native CLI, pero las instrucciones de este README están orientadas a Android. Para compilar en iOS se requiere macOS con Xcode. Si querés agregar soporte documentado para iOS, avisame.
 
 ---
 
@@ -54,6 +82,18 @@ cd ..
 adb install -r android/app/build/outputs/apk/debug/app-debug.apk
 adb shell am start -n com.citas/.MainActivity
 ```
+
+---
+
+## 🧪 Tests
+
+El proyecto incluye Jest como runner de pruebas. Para ejecutarlos:
+
+```bash
+npm test
+```
+
+Por defecto se encuentra un test básico de renderizado de `App.tsx` en `__tests__/App.test.tsx`.
 
 ---
 
@@ -104,7 +144,8 @@ Una vez que Metro esté corriendo, presioná:
 ```
 react-native-citas/
 ├── android/              # Proyecto Android nativo
-├── ios/                  # Proyecto iOS nativo
+├── ios/                  # Proyecto iOS nativo (requiere macOS + Xcode)
+├── screenshop/           # Capturas de pantalla para la documentación
 ├── src/
 │   ├── components/
 │   │   ├── Formulario.js          # Formulario crear/editar cita
@@ -140,6 +181,66 @@ react-native-citas/
 | `react` | 19.2.3 | Librería React |
 | `react-native-safe-area-context` | ^5.5.2 | SafeAreaView |
 | `react-native-date-picker` | ^5.0.13 | Selector de fecha/hora |
+
+---
+
+## 📦 Build de release (APK firmada)
+
+Para generar una APK de producción firmada:
+
+### 1. Generar el keystore
+
+```bash
+cd android
+keytool -genkeypair -v -keystore citas-release-key.keystore -alias citas -keyalg RSA -keysize 2048 -validity 10000
+```
+
+### 2. Configurar el keystore en `~/.gradle/gradle.properties`
+
+```properties
+CITAS_UPLOAD_STORE_FILE=citas-release-key.keystore
+CITAS_UPLOAD_KEY_ALIAS=citas
+CITAS_UPLOAD_STORE_PASSWORD=tu_clave
+CITAS_UPLOAD_KEY_PASSWORD=tu_clave
+```
+
+### 3. Actualizar `android/app/build.gradle`
+
+Agregar dentro del bloque `android { ... }`:
+
+```gradle
+signingConfigs {
+    release {
+        if (project.hasProperty('CITAS_UPLOAD_STORE_FILE')) {
+            storeFile file(CITAS_UPLOAD_STORE_FILE)
+            storePassword CITAS_UPLOAD_STORE_PASSWORD
+            keyAlias CITAS_UPLOAD_KEY_ALIAS
+            keyPassword CITAS_UPLOAD_KEY_PASSWORD
+        }
+    }
+}
+
+buildTypes {
+    release {
+        signingConfig signingConfigs.release
+        minifyEnabled enableProguardInReleaseBuilds
+        proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+    }
+}
+```
+
+### 4. Generar la APK
+
+```bash
+cd android
+./gradlew assembleRelease
+```
+
+La APK resultante quedará en:
+
+```
+android/app/build/outputs/apk/release/app-release.apk
+```
 
 ---
 
@@ -190,9 +291,3 @@ Cambiá `proguard-android.txt` por `proguard-android-optimize.txt`.
 ## 👨‍💻 Autor
 
 - **Yamil Zaracho**
-
----
-
-## 📄 Licencia
-
-Este proyecto es privado y fue generado con [React Native CLI](https://github.com/react-native-community/cli).
