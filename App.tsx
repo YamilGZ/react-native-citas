@@ -32,12 +32,8 @@ interface PacienteType {
     const [pacientes, setPacientes ] = useState<PacienteType[]>([])
     const [paciente, setPaciente ] = useState<PacienteType | null>(null)
 
-    const pacienteEditar = (id: string) => {
-      const pacienteEditar = pacientes.find(paciente => paciente.id === id)
-
-      if (pacienteEditar) {
-        setPaciente(pacienteEditar)
-      }
+    const pacienteEditar = (pacienteAEditar: PacienteType) => {
+      setPaciente(pacienteAEditar)
     }
 
     const pacienteEliminar = (id: string) => {
@@ -114,6 +110,7 @@ interface PacienteType {
       }
 
       <Formulario
+        key={paciente?.id || 'nueva-cita'}
         modalVisible={modalVisible}
         cerrarModal={cerrarModal}
         setPacientes={setPacientes}
