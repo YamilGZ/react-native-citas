@@ -298,7 +298,8 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: '#fff',
     padding: 15,
-    borderRadius: 10
+    borderRadius: 10,
+    color: '#000'
   },
   campo: {
     marginTop: 10,
