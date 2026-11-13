@@ -15,16 +15,7 @@ import Formulario from './src/components/Formulario'
 import Paciente from './src/components/Paciente'
 import InformacionPaciente from './src/components/InformacionPaciente'
 import { cargarPacientes, guardarPacientes } from './src/helpers/storage'
-
-interface PacienteType {
-  id: string;
-  paciente: string;
-  propietario: string;
-  email: string;
-  telefono: string;
-  fecha: Date;
-  sintomas: string;
-}
+import type { PacienteType } from './src/types'
 
   const App = () => {
 
@@ -33,14 +24,6 @@ interface PacienteType {
     const [pacientes, setPacientes ] = useState<PacienteType[]>([])
     const [paciente, setPaciente ] = useState<PacienteType | null>(null)
     const cargaInicialRef = useRef(true)
-
-    // Configurar StatusBar en Android (los métodos no están tipados en RN 0.87 New Architecture)
-    useEffect(() => {
-      if (Platform.OS === 'android') {
-        ;(StatusBar as any).setBackgroundColor('#f3f4f6')
-        ;(StatusBar as any).setTranslucent(false)
-      }
-    }, [])
 
     // Cargar pacientes persistidos al iniciar la app
     useEffect(() => {
@@ -88,7 +71,7 @@ interface PacienteType {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle='dark-content' />
+      {Platform.OS === 'android' && <StatusBar barStyle='dark-content' />}
       <Text style={styles.titulo}>Administrador de Citas {' '}
         <Text style={styles.tituloBold}>Veterinaria</Text>
       </Text>

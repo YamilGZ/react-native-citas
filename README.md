@@ -1,6 +1,6 @@
 # 🐾 Citas Veterinaria — React Native
 
-Aplicación móvil para administrar citas de una veterinaria. Desarrollada con **React Native 0.87** y la **New Architecture** (Bridgeless + Fabric).
+Aplicación móvil para administrar citas de una veterinaria. Desarrollada con **React Native 0.87**, **TypeScript** y la **New Architecture** (Bridgeless + Fabric).
 
 Permite gestionar pacientes con operaciones CRUD completas: crear, listar, ver detalles, editar y eliminar citas veterinarias.
 
@@ -150,11 +150,14 @@ react-native-citas/
 ├── screenshots/           # Capturas de pantalla para la documentación
 ├── src/
 │   ├── components/
-│   │   ├── Formulario.js          # Formulario crear/editar cita
-│   │   ├── Paciente.js            # Tarjeta de paciente en lista
-│   │   └── InformacionPaciente.js # Modal con detalles completos
-│   └── helpers/
-│       └── index.js               # Helpers reutilizables (formatearFecha)
+│   │   ├── Formulario.tsx          # Formulario crear/editar cita
+│   │   ├── Paciente.tsx            # Tarjeta de paciente en lista
+│   │   └── InformacionPaciente.tsx # Modal con detalles completos
+│   ├── helpers/
+│   │   ├── index.ts                # Helpers reutilizables (formatearFecha)
+│   │   └── storage.js              # Persistencia con AsyncStorage
+│   └── types/
+│       └── index.ts                # Tipos compartidos (PacienteType)
 ├── App.tsx               # Punto de entrada principal
 ├── start.ps1             # Script automático de inicio
 ├── package.json
@@ -171,6 +174,7 @@ react-native-citas/
 - **Ver detalle:** mantené presionada una tarjeta para abrir el modal con información completa del paciente.
 - **Editar cita:** presioná el botón *Editar* dentro de una tarjeta. Carga todos los datos del paciente.
 - **Eliminar cita:** presioná el botón *Eliminar* dentro de una tarjeta. Aparece una alerta de confirmación.
+- **Persistencia local:** las citas se guardan automáticamente con AsyncStorage y se recuperan al reiniciar la app.
 - **Status bar visible:** los íconos del sistema (hora, batería) se muestran en oscuro sobre el fondo claro.
 - **Teclado no tapa los inputs:** el formulario se ajusta para que el campo de síntomas sea visible mientras se escribe.
 
@@ -188,7 +192,7 @@ react-native-citas/
 | `@react-native-community/datetimepicker` | ^9.2.1 | Selector nativo de fecha/hora |
 | `@react-native-async-storage/async-storage` | ^3.1.1 | Persistencia local de citas |
 
-> Nota: inicialmente se probó `react-native-date-picker`, pero se reemplazó por `@react-native-community/datetimepicker` para compatibilidad nativa en dispositivos Android 14.
+> Nota: inicialmente se probó `react-native-date-picker`, pero se reemplazó y posteriormente eliminó del proyecto en favor de `@react-native-community/datetimepicker` para compatibilidad nativa en dispositivos Android 14.
 
 ---
 
@@ -302,7 +306,7 @@ npm install @react-native-community/datetimepicker
 
 ### Status bar no se ve sobre fondo claro
 
-La app configura `StatusBar` con `barStyle='dark-content'` y fondo `#f3f4f6` para que hora, batería e íconos del sistema sean visibles.
+La app usa `barStyle='dark-content'` en `StatusBar` y el fondo del contenedor principal es `#f3f4f6`, para que hora, batería e íconos del sistema sean visibles.
 
 ---
 
