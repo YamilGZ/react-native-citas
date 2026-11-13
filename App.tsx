@@ -34,6 +34,14 @@ interface PacienteType {
     const [paciente, setPaciente ] = useState<PacienteType | null>(null)
     const cargaInicialRef = useRef(true)
 
+    // Configurar StatusBar en Android (los métodos no están tipados en RN 0.87 New Architecture)
+    useEffect(() => {
+      if (Platform.OS === 'android') {
+        ;(StatusBar as any).setBackgroundColor('#f3f4f6')
+        ;(StatusBar as any).setTranslucent(false)
+      }
+    }, [])
+
     // Cargar pacientes persistidos al iniciar la app
     useEffect(() => {
       const iniciar = async () => {
@@ -80,14 +88,7 @@ interface PacienteType {
 
   return (
     <SafeAreaView style={styles.container}>
-      {Platform.OS === 'android' && (
-        // @ts-ignore - props de Android no tipadas en RN 0.87
-        <StatusBar
-          barStyle='dark-content'
-          backgroundColor='#f3f4f6'
-          translucent={false}
-        />
-      )}
+      <StatusBar barStyle='dark-content' />
       <Text style={styles.titulo}>Administrador de Citas {' '}
         <Text style={styles.tituloBold}>Veterinaria</Text>
       </Text>
