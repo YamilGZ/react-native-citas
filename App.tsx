@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import React,{ useState, useEffect, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Text,
@@ -14,6 +14,7 @@ import {
 import Formulario from './src/components/Formulario'
 import Paciente from './src/components/Paciente'
 import InformacionPaciente from './src/components/InformacionPaciente'
+import { cargarPacientes, guardarPacientes } from './src/helpers/storage'
 
 interface PacienteType {
   id: string;
@@ -31,6 +32,25 @@ interface PacienteType {
     const [ modalPaciente, setModalPaciente ] = useState(false)
     const [pacientes, setPacientes ] = useState<PacienteType[]>([])
     const [paciente, setPaciente ] = useState<PacienteType | null>(null)
+    const cargaInicialRef = useRef(true)
+
+    // Cargar pacientes persistidos al iniciar la app
+    useEffect(() => {
+      const iniciar = async () => {
+        const pacientesGuardados = await cargarPacientes()
+        setPacientes(pacientesGuardados as PacienteType[])
+        cargaInicialRef.current = false
+      }
+
+      iniciar()
+    }, [])
+
+    // Persistir automáticamente cuando cambia la lista de pacientes
+    useEffect(() => {
+      if (!cargaInicialRef.current) {
+        guardarPacientes(pacientes)
+      }
+    }, [pacientes])
 
     const pacienteEditar = (pacienteAEditar: PacienteType) => {
       setPaciente(pacienteAEditar)

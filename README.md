@@ -4,7 +4,7 @@ Aplicación móvil para administrar citas de una veterinaria. Desarrollada con *
 
 Permite gestionar pacientes con operaciones CRUD completas: crear, listar, ver detalles, editar y eliminar citas veterinarias.
 
-> ⚠️ **Persistencia:** por ahora los datos se guardan **en memoria**. Al cerrar la app, las citas se pierden. En futuras versiones se puede agregar persistencia local (AsyncStorage, SQLite, etc.).
+> ✅ **Persistencia:** las citas se guardan localmente con **AsyncStorage**. Al cerrar y volver a abrir la app, los pacientes permanecen disponibles.
 
 > 📦 **APK de release:** en la raíz del proyecto se incluye `app-citas.apk`, una APK de release lista para instalar en Android sin depender de la PC. Para ver cómo se genera, consultá [`APK_BUILD.md`](APK_BUILD.md).
 
@@ -186,6 +186,7 @@ react-native-citas/
 | `react` | 19.2.3 | Librería React |
 | `react-native-safe-area-context` | ^5.5.2 | SafeAreaView |
 | `@react-native-community/datetimepicker` | ^9.2.1 | Selector nativo de fecha/hora |
+| `@react-native-async-storage/async-storage` | ^3.1.1 | Persistencia local de citas |
 
 > Nota: inicialmente se probó `react-native-date-picker`, pero se reemplazó por `@react-native-community/datetimepicker` para compatibilidad nativa en dispositivos Android 14.
 
